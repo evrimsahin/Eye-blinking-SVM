@@ -40,12 +40,14 @@ time.sleep(1.0)
 SHOWCASE_DATA=pd.read_csv(args["prevision"], index_col="frame")
 SHOWCASE_DATA_CUMSUM=SHOWCASE_DATA.cumsum(axis=0)
 SHOWCASE_DATA_CUMSUM=SHOWCASE_DATA_CUMSUM.drop('ear_norm', 1)
-
+video_len = cv2.VideoCapture(args["video"])
+frame_len =  int(video_len.get(cv2.CAP_PROP_FRAME_COUNT))
 DF_BLINK=SHOWCASE_DATA
 DF_BLINK=DF_BLINK[DF_BLINK.blink>0]
 FRAME = 0
-
-while True:
+i = 0
+while i<frame_len:
+    i = i+1
     if fileStream and not vs.more():
         break
 

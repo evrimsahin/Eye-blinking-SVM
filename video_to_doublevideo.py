@@ -99,6 +99,8 @@ predictor = dlib.shape_predictor(args["shape_predictor"])
 print("[INFO] starting video stream thread...")
 vs = FileVideoStream(args["video"]).start()
 fileStream = True
+video_len = cv2.VideoCapture(args["video"])
+frame_len =  int(video_len.get(cv2.CAP_PROP_FRAME_COUNT))
 # vs = VideoStream(src=0).start()
 # vs = VideoStream(usePiCamera=True).start()
 # fileStream = False
@@ -109,9 +111,10 @@ FRAME=0
 ear_list=list()
 
 array_blink_threshold=list()
-
+i = 0
 # loop over frames from the video stream
-while True:
+while i<frame_len:
+	i = i+1
 	# if this is a file video stream, then we need to check if
 	# there any more frames left in the buffer to process
 	if fileStream and not vs.more():
@@ -184,7 +187,7 @@ while True:
 			cv2.circle(frame, (x, y), 1, (0, 0, 255), -1)
 
 	# show the frame
-	# cv2.imshow("Frame", frame)
+	cv2.imshow("Frame", frame)
 	sys.stdout.write('\r{}'.format(FRAME))
 	key = cv2.waitKey(1) & 0xFF
 
@@ -474,6 +477,15 @@ while True:
         print("image frame{}.jpg saved".format(FRAME))
     except:
         print("imwrite error")
+
+    # show the frame
+    cv2.imshow("Frame", frame)
+    sys.stdout.write('\r{}'.format(FRAME))
+    key = cv2.waitKey(1) & 0xFF
+
+    # if the `q` key was pressed, break from the loop
+    if key == ord("q"):
+        break
 
     FRAME += 1
 

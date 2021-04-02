@@ -99,6 +99,9 @@ predictor = dlib.shape_predictor(args["shape_predictor"])
 print("[INFO] starting video stream thread...")
 vs = FileVideoStream(args["video"]).start()
 fileStream = True
+video_len = cv2.VideoCapture(args["video"])
+frame_len =  int(video_len.get(cv2.CAP_PROP_FRAME_COUNT))
+print(frame_len)
 # vs = VideoStream(src=0).start()
 # vs = VideoStream(usePiCamera=True).start()
 # fileStream = False
@@ -109,9 +112,10 @@ FRAME=0
 ear_list=list()
 
 array_blink_threshold=list()
-
+i = 0
 # loop over frames from the video stream
-while True:
+while i<frame_len:
+	i = i+1
 	# if this is a file video stream, then we need to check if
 	# there any more frames left in the buffer to process
 	if fileStream and not vs.more():

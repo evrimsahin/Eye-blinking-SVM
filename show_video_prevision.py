@@ -35,15 +35,16 @@ predictor = dlib.shape_predictor(args["shape_predictor"])
 vs = FileVideoStream(args["video"]).start()
 fileStream = True
 time.sleep(1.0)
-
+video_len = cv2.VideoCapture(args["video"])
+frame_len =  int(video_len.get(cv2.CAP_PROP_FRAME_COUNT))
 SHOWCASE_DATA=pd.read_csv(args["prevision"], index_col="frame")
 SHOWCASE_DATA=SHOWCASE_DATA.cumsum(axis=0)
 FRAME = 0
-
-while True:
+i = 0
+while i<frame_len:
     if fileStream and not vs.more():
         break
-
+    i = i+1
     frame = vs.read()
     frame = imutils.resize(frame, width=900)
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)

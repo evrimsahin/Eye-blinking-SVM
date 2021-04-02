@@ -62,7 +62,7 @@ def eye_aspect_ratio(eye):
 
 	# return the eye aspect ratio
 	return ear
- 
+
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
 ap.add_argument("-p", "--shape-predictor", required=True,
@@ -96,6 +96,8 @@ predictor = dlib.shape_predictor(args["shape_predictor"])
 print("[INFO] starting video stream thread...")
 vs = FileVideoStream(args["video"]).start()
 fileStream = True
+video_len = cv2.VideoCapture(args["video"])
+frame_len =  int(video_len.get(cv2.CAP_PROP_FRAME_COUNT))
 # vs = VideoStream(src=0).start()
 # vs = VideoStream(usePiCamera=True).start()
 # fileStream = False
@@ -106,10 +108,11 @@ FRAME=0
 ear_list=list()
 
 array_blink_threshold=list()
-
+i = 0
 # loop over frames from the video stream
-while True:
+while i<frame_len:
 	# if this is a file video stream, then we need to check if
+	i = i +1
 	# there any more frames left in the buffer to process
 	if fileStream and not vs.more():
 		break
@@ -266,7 +269,7 @@ df_fin=pd.DataFrame(columns=col)
 for i in range(3, len(listear)-4):
     tmp_ear=listear[i-3:i+4]
     df_fin.loc[i]=tmp_ear
-	
+
 df_fin.index.name="frame"
 df_fin.dropna(how='any', inplace=True)
 
